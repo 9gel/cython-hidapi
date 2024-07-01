@@ -18,6 +18,7 @@ hid.*.pyd
 
 # Virtual environments
 venv/
+.cache/
 
 # Doc output
 docs/_build
