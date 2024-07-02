@@ -6,8 +6,8 @@ import subprocess
 import re
 
 hidapi_topdir = os.path.join("hidapi")
-hidapi_include = os.path.join(hidapi_topdir, "hidapi")
-system_hidapi = 0
+hidapi_include = "/usr/include"
+system_hidapi = 1
 libs = []
 src = ["hid.pyx", "chid.pxd"]
 
@@ -16,10 +16,10 @@ def hidapi_src(platform):
     return os.path.join(hidapi_topdir, platform, "hid.c")
 
 
-if "--with-system-hidapi" in sys.argv:
-    sys.argv.remove("--with-system-hidapi")
-    system_hidapi = 1
-    hidapi_include = "/usr/include/hidapi"
+if "--without-system-hidapi" in sys.argv:
+    sys.argv.remove("--without-system-hidapi")
+    hidapi_include = hidapi_topdir
+    system_hidapi = 0
 
 if sys.platform.startswith("linux"):
     modules = []
@@ -83,7 +83,7 @@ if sys.platform.startswith("win") or sys.platform.startswith("cygwin"):
 if "bsd" in sys.platform:
     if "freebsd" in sys.platform:
         libs = ["usb", "hidapi"]
-        include_dirs_bsd = ["/usr/local/include/hidapi"]
+        include_dirs_bsd = ["/usr/local/include"]
     else:
         libs = ["usb-1.0"]
         include_dirs_bsd = [
