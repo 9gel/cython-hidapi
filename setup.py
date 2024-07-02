@@ -6,8 +6,8 @@ import subprocess
 import re
 
 hidapi_topdir = os.path.join("hidapi")
-hidapi_include = os.path.join(hidapi_topdir, "hidapi")
-system_hidapi = 0
+hidapi_include = "/usr/include/hidapi"
+system_hidapi = 1
 libs = []
 src = ["hid.pyx"]
 
@@ -16,10 +16,10 @@ def hidapi_src(platform):
     return os.path.join(hidapi_topdir, platform, "hid.c")
 
 
-if "--with-system-hidapi" in sys.argv:
-    sys.argv.remove("--with-system-hidapi")
-    system_hidapi = 1
-    hidapi_include = "/usr/include/hidapi"
+if "--without-system-hidapi" in sys.argv:
+    sys.argv.remove("--without-system-hidapi")
+    hidapi_include = os.path.join(hidapi_topdir, "hidapi")
+    system_hidapi = 0
 
 if sys.platform.startswith("linux"):
     modules = []
